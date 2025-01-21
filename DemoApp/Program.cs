@@ -30,6 +30,7 @@ builder.Services.AddControllersWithViews();
 // Add DB context
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StudentPortal")));
 
+
 // Configure authentication with cookies
 builder.Services.AddAuthentication("Cookies")
     .AddCookie(options =>
