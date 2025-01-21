@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DemoApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/DemoApp.styles.css" asp-append-version="true" />
+
+    <style>
+        /* Custom Background Color for Navbar */
+        .custom-navbar {
+        background-color: #4CAF50; /* Green background */
+        }
+
+        /* Custom Text Color for Navbar */
+        .custom-navbar .navbar-brand,
+        .custom-navbar .nav-link {
+        color: white; /* White text color */
+        font-family: 'Arial', sans-serif; /* Custom Font */
+        }
+
+        /* Change the color of links on hover */
+        .custom-navbar .nav-link:hover {
+        color: gray !important; /* Yellow color on hover */
+        }
+
+        body {
+        padding-top: 70px; /* Adjust to the height of the navbar */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        @if (ViewContext.RouteData.Values["controller"]?.ToString() == "Home")
+        {
+            <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <a class="navbar-brand m-1 fs-4" asp-area="" asp-controller="Home" asp-action="Index">Employee Address Book</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        @* <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Students" asp-action="List">Students List</a>
+                        </li> *@
+                            <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Login", "User")">Login</a>
+                            </li>
+                            <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Register", "User")">Register</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
+        else if (ViewContext.RouteData.Values["controller"]?.ToString() == "Students")
+        {
+            <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <a class="navbar-brand m-1 fs-4" asp-area="" asp-controller="Students" asp-action="Index">Employee Address Book</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Students" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Students" asp-action="List">Employees List</a>
+                            </li>
+                            @* <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Login", "User")">Login</a>
+                            </li>
+                            <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Register", "User")">Register</a>
+                            </li> *@
+                        </ul>
+                        <!-- Conditionally show "Edit Profile" if the user is authenticated -->
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User" asp-action="Profile">My Profile</a>
+                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item active">
+                                    <a class="nav-link" asp-area="" asp-controller="Students" asp-action="Edit">Edit Profile</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <form asp-controller="User" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-link nav-link text-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
+        else if (ViewContext.RouteData.Values["controller"]?.ToString() == "User")
+        {
+            <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <a class="navbar-brand m-1 fs-4" asp-area="" asp-controller="Home" asp-action="Index">Employee Address Book</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            @* <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Students" asp-action="List">Students List</a>
+                        </li> *@
+                            <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Login", "User")">Login</a>
+                            </li>
+                            <li class="nav-item active align-content-end">
+                                <a class="nav-link" href="@Url.Action("Register", "User")">Register</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted custom-navbar">
+        <div class="container text-black">
+            &copy; 2025 - DemoApp - <a class="text-decoration-none text-secondary" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

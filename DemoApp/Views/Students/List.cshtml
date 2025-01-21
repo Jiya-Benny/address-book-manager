@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Employees List";
+}
+
+@model PaginatedResult<DemoApp.Models.Entities.Student>
+
+<h1>Employees List</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form class="d-flex" asp-action="List" method="get">
+            <input type="search" name="searchString" class="form-control me-1 h-25" placeholder="Search" aria-label="Search" value="@Context.Request.Query["searchString"]" />
+            <button class="btn btn-dark h-25 w-50" style="font-size: 14px;" type="submit">Search by name</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <a asp-action="List" class="text-dark text-decoration-none">Back to list</a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>S.no.</th>
+            <th>
+                Name
+                <a asp-action="List" asp-controller="Students" asp-route-sortOrder="name_asc" class="text-black btn-link text-decoration-none">↑</a>
+                <a asp-action="List" asp-controller="Students" asp-route-sortOrder="name_desc" class="text-black btn-link text-decoration-none">↓</a>
+            <th>Email
+                <a asp-action="List" asp-route-sortOrder="email_asc" class="text-black btn-link text-decoration-none">↑</a>
+                <a asp-action="List" asp-route-sortOrder="email_desc" class="text-black btn-link text-decoration-none">↓</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    @if (Model == null || !Model.Any())
+    {
+        <p>No items found in the database.</p>
+    }
+    else {
+        <tbody>
+            @foreach (var student in Model.Select((student, index) => new { Student = student, Index = index + 1 }))
+            {
+                <tr>
+                    <td>@student.Index</td> <!-- Serial number -->
+                    <td><a class="text-decoration-none text-black" asp-controller="Students" asp-action="ProfileView" asp-route-id="@student.Student.UserId">@student.Student.Name</a></td>
+                    <td>@student.Student.Email</td>
+                    <td>
+                       @*  <a class="btn btn-dark" asp-controller="Students" asp-action="Edit" asp-route-id="@student.Student.UserId">Edit</a>
+                        <form asp-action="Delete" asp-controller="Students" method="post" class="d-inline" onsubmit="return confirmDelete();">
+                            <input type="hidden" name="UserId" value="@student.Student.UserId" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form> *@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>
+
+<div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6">
+        <nav>
+            <ul class="pagination justify-content-end">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link text-black" asp-action="List" asp-route-pageNumber="1" asp-route-sortOrder="@Context.Request.Query["sortOrder"]" asp-route-searchString="@Context.Request.Query["searchString"]">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-black" asp-action="List" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sortOrder="@Context.Request.Query["sortOrder"]" asp-route-searchString="@Context.Request.Query["searchString"]">Previous</a>
+                    </li>
+                }
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                        <a class="page-link text-black" asp-action="List" asp-route-pageNumber="@i" asp-route-sortOrder="@Context.Request.Query["sortOrder"]" asp-route-searchString="@Context.Request.Query["searchString"]">@i</a>
+                    </li>
+                }
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link text-black" asp-action="List" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sortOrder="@Context.Request.Query["sortOrder"]" asp-route-searchString="@Context.Request.Query["searchString"]">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-black" asp-action="List" asp-route-pageNumber="@Model.TotalPages" asp-route-sortOrder="@Context.Request.Query["sortOrder"]" asp-route-searchString="@Context.Request.Query["searchString"]">Last</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this student?');
+    }
+</script>

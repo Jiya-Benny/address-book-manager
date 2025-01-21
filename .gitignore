@@ -1,0 +1,11 @@
+# Ignore Visual Studio files
+.vs/
+
+# Ignore log files
+*.log
+
+# Ignore compiled Python files
+*.pyc
+
+# Ignore node_modules folder
+node_modules/
